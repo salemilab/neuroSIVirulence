@@ -11,14 +11,13 @@
 #SBATCH --time=90:00:00
 ##SBATCH --partition=gpu
 ##SBATCH --gpus=geforce:2
-#SBATCH --array=1-17
+#SBATCH --array=1-13
 #SBATCH --cpus-per-task=4
 
 module load java/1.8.0_31
 module load weka/3.8
  
 
-#file=$(ls test*.arff | sed -n ${SLURM_ARRAY_TASK_ID}p)
 file=$(ls app*.arff | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 

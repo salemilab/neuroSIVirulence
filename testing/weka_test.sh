@@ -18,8 +18,7 @@ module load java/1.8.0_31
 module load weka/3.8
  
 
-#file=$(ls test*.arff | sed -n ${SLURM_ARRAY_TASK_ID}p)
-file=$(ls app*.arff | sed -n ${SLURM_ARRAY_TASK_ID}p)
+file=$(ls test*.arff | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 
 java weka.classifiers.rules.PART \
