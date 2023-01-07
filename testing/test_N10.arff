@@ -1,0 +1,23 @@
+@relation 'SIVE-weka.filters.supervised.attribute.AttributeSelection-Eweka.attributeSelection.WrapperSubsetEval -B weka.classifiers.trees.J48 -F 5 -T 0.01 -R 1 -E DEFAULT -- -C 0.25 -M 2-Sweka.attributeSelection.BestFirst -D 1 -N 5'
+
+@attribute molecular_size_position_28 numeric
+@attribute polarity_position_94 numeric
+@attribute polarity_position_130 numeric
+@attribute ID_position_197 {A,C,D,E,F,G,H,I,K,L,M,N,P,Q,R,S,T,V,W,Y}
+@attribute ID_position_317 {A,C,D,E,F,G,H,I,K,L,M,N,P,Q,R,S,T,V,W,Y}
+@attribute ID_position_325 {A,C,D,E,F,G,H,I,K,L,M,N,P,Q,R,S,T,V,W,Y}
+@attribute polarity_position_407 numeric
+@attribute ID_position_410 {A,C,D,E,F,G,H,I,K,L,M,N,P,Q,R,S,T,V,W,Y}
+@attribute ID_position_415 {A,C,D,E,F,G,H,I,K,L,M,N,P,Q,R,S,T,V,W,Y}
+@attribute ID_position_462 {A,C,D,E,F,G,H,I,K,L,M,N,P,Q,R,S,T,V,W,Y}
+@attribute class {SIVE,noSIVE}
+
+@data
+
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,I,noSIVE,{22.333333}
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,I,noSIVE,{22.333333}
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,I,noSIVE,{22.333333}
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,I,noSIVE,{22.333333}
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,T,noSIVE,{22.333333}
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,I,noSIVE,{22.333333}
+1.33,-0.032,-0.032,Q,E,W,-0.032,P,R,I,noSIVE,{22.333333}
