@@ -52,16 +52,17 @@ if (prefix=="train_") {
   }
   
   mclapply(1:length(test_set), function(x) {
-    write.table(test_set[[x]], paste0("../testing/", names(test_set)[x]), sep=',', quote=F, row.names=F, col.names=F)
+    write.table(test_set[[x]], paste0("../testing/", names(test_set)[x], ".tmp"), sep=',', quote=F, row.names=F, col.names=F)
   }, mc.cores=numCores)
   
   files = list.files(path="../testing", pattern="test", full.names=T)
   
   lapply(files, function(x) {
-    system2(command="cat", args = c("arff_header", x), stdout = paste0(x, ".arff"))
+    y=gsub("(.+).tmp", "\\1", x)
+    system2(command="cat", args = c("arff_header", x), stdout = paste0(y, ".arff"))
   })
   
-  system2(command="rm", args = c("../testing/test*"))
+  system2(command="rm", args = c("../testing/test*tmp"))
   
   
 } else {

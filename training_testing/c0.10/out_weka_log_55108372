@@ -1,0 +1,60 @@
+
+Options: -C 0.10 -M 2 
+
+=== Classifier model (full training set) ===
+
+PART decision list
+------------------
+
+polarity_position_407 > -0.032 AND
+ID_position_462 = I: SIVE (486.65)
+
+polarity_position_94 > -0.384: noSIVE (625.93)
+
+ID_position_317 = E AND
+ID_position_325 = W: SIVE (66.02/1.55)
+
+ID_position_410 = S: noSIVE (37.19)
+
+ID_position_325 = W AND
+ID_position_415 = R: SIVE (16.68)
+
+ID_position_325 = R: noSIVE (7.42/0.15)
+
+ID_position_317 = K: SIVE (4.1)
+
+: noSIVE (2.53/0.68)
+
+Number of Rules  : 	8
+
+
+Time taken to build model: 0.33 seconds
+
+Time taken to test model on training data: 0.02 seconds
+
+=== Error on training data ===
+
+Correctly Classified Instances        1244.2878          99.8208 %
+Incorrectly Classified Instances         2.2343           0.1792 %
+Kappa statistic                          0.9964
+Mean absolute error                      0.0035
+Root mean squared error                  0.0403
+Relative absolute error                  0.6967 %
+Root relative squared error              8.0815 %
+Total Number of Instances             1246.5221
+
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.999    0.002    0.997      0.999    0.998      0.996    1.000     1.000     SIVE
+                 0.998    0.001    0.999      0.998    0.998      0.996    1.000     1.000     noSIVE
+Weighted Avg.    0.998    0.002    0.998      0.998    0.998      0.996    1.000     1.000     
+
+
+=== Confusion Matrix ===
+
+   a      b      <-- classified as
+ 572.04   0.68 |      a = SIVE
+   1.55 672.24 |      b = noSIVE
+

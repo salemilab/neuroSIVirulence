@@ -22,7 +22,7 @@ while (x <= ref_length) {
 }
 
 ref_site_df = data.frame(Site=Site,
-                         ref_site=Site+ref_site)
+                         ref_site=ref_site)
 
 # ref_site=c(37)
 # Site1=1
