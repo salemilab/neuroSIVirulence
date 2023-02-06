@@ -1,7 +1,0 @@
-java.lang.Exception: No value given for -T option.
-	at weka.core.Utils.getOption(Utils.java:579)
-	at weka.core.Utils.getOption(Utils.java:557)
-	at weka.classifiers.evaluation.Evaluation.evaluateModel(Evaluation.java:1317)
-	at weka.classifiers.Evaluation.evaluateModel(Evaluation.java:668)
-	at weka.classifiers.AbstractClassifier.runClassifier(AbstractClassifier.java:141)
-	at weka.classifiers.rules.PART.main(PART.java:888)

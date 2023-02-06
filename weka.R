@@ -1,10 +1,13 @@
 library('dplyr')
 library('tidyverse')
 library('stringr')
+require('parallel')
+
+numCores=detectCores()
 
 
 # Feature selection
-feature.selection = system(paste('java --add-opens \
+system(paste('java --add-opens \
                            java.base/java.lang=ALL-UNNAMED \
                            -Xmx1024m \
                            -cp /Applications/weka-3-8-6/weka.jar \
@@ -16,16 +19,24 @@ feature.selection = system(paste('java --add-opens \
                            -F 5 -T 0.01 -R 1 -E DEFAULT --" \
                            -S "weka.attributeSelection.BestFirst -D 1 -N 5"'), 
                      intern = TRUE)
+                     
+                     
 
 #train the model with PART from Weka
-train.model = system(paste('java --add-opens \
+file_list=list.files[pattern="train*.arff")
+prefix="train_"
+
+mclapply(file_list, function(x) {
+model=gsub("$prefix(.+).arff", "\\1", x)
+system(paste('java --add-opens \
                            java.base/java.lang=ALL-UNNAMED \
                            -Xmx1024m \
                            -cp /Applications/weka-3-8-6/weka.jar \
                            weka.classifiers.rules.PART \
-                           -C 0.10 -M 2 -no-cv -t /Applications/weka-3-8-6/data/vote.arff \
-                           -d SIVE'), 
+                           -C 0.25 -M 2 -no-cv -t x \
+                           -d $model'), 
                      intern = TRUE)
+                     }, mc.cores=numCores)
 
 # C calculated as follows:
 # p = f +- z*sqrt( f*(1-f) / N )
@@ -37,11 +48,17 @@ train.model = system(paste('java --add-opens \
 
 #command used for Validation and Application. Each separate validation and application set 
 # (per monkey and per tissue and time point was individually entered in -T)
-validate.model = system(paste('java --add-opens \
+file_list=list.files[pattern="test*.arff")
+prefix="test_"
+
+mclapply(file_list, function(x) {
+model=gsub("$prefix(.+).arff", "\\1", x)
+system(paste('java --add-opens \
                                                  java.base/java.lang=ALL-UNNAMED \
                                                  -Xmx1024m \
                                                  -cp /Applications/weka-3-8-6/weka.jar \
                                                  weka.classifiers.rules.PART \
-                                                 -l SIVE \
-                                                 -T <.arff_file_for_testing_the_model>'), 
+                                                 -l $model \
+                                                 -T x'), 
                                            intern = TRUE)
+                                           

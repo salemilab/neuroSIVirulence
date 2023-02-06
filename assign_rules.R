@@ -5,11 +5,22 @@ library('stringr')
 require(parallel)
 require(ggplot2)
 require(ggpubr)
+<<<<<<< HEAD
+
+=======
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 
 
+rm(list=ls())
 numCores=detectCores()
 
+<<<<<<< HEAD
 seqs = readAAStringSet('../FASTA/all_monkeys.aa.fasta.uniqueseq.fasta')
+=======
+setwd("/Users/macbook/Dropbox (UFL)/SIV/SIV_Machine_Learning/NEW_rules/application")
+
+seqs = readAAStringSet('../../FASTA/all_monkeys.aa.fasta.uniqueseq.fasta')
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 
 # Transforming sequence data into character vectors
 seqs_v = mclapply(1:length(seqs), function(i) {
@@ -76,7 +87,11 @@ feats = mclapply(seqs_v, function(seq) {
 
 # Setting rules and site number variables
 
+<<<<<<< HEAD
 rules = read.delim("rules_sites.txt", sep='\t', header=T)
+=======
+rules = read.delim("../rules_sites.txt", sep='\t', header=T)
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 #  mutate(Feature = ifelse(Feature=="polarity", "P",
 #                         ifelse(Feature=="molecular_size", "MS", Feature)))
 #    spread(Feature, Value)
@@ -167,9 +182,16 @@ r6s2=462
 
 
 tbl.manip = function(new_df, df, rule_start, rule_end) {
+<<<<<<< HEAD
   left_join(new_df, df) %>%
     gather(rule, value, rule_start:rule_end) %>%
     mutate(time = as.numeric(ifelse(grepl("JA41", isolate), 
+=======
+  tbl=dplyr::left_join(new_df, df) %>%
+    dplyr::filter(training=="application") %>%
+    gather(rule, value, rule_start:rule_end) %>%
+    dplyr::mutate(time = as.numeric(ifelse(grepl("JA41", isolate), 
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
                                     gsub("JA41-M\\d_[A-Z]+_.+_(\\d+)_.+", "\\1", isolate),
                                     gsub("(\\d+).+", "\\1", isolate))),
            tissue = ifelse(grepl("JA41", isolate), 
@@ -177,6 +199,7 @@ tbl.manip = function(new_df, df, rule_start, rule_end) {
                            gsub("\\d+[A-Z]\\d+([A-Z]).+", "\\1", isolate)),
            animal = ifelse(grepl("JA41", isolate), "JA41",
                            gsub("\\d+([A-Z]\\d+)[A-Z].+", "\\1", isolate))) %>%
+<<<<<<< HEAD
     group_by(animal) %>%
     mutate(time_nec = max(time, na.rm=T)) %>%
     mutate(time_nec = ifelse(time_nec==-Inf, Inf, time_nec)) %>%
@@ -189,6 +212,20 @@ tbl.manip = function(new_df, df, rule_start, rule_end) {
     filter(tissue != "LPL", tissue!="PB") %>%
     mutate(tissue=factor(tissue, levels=c("P", "J", "K",
                                           "O", "B", "U")))
+=======
+    dplyr::group_by(animal) %>%
+    dplyr::mutate(time_nec = max(time)) %>%
+    dplyr::mutate(time_disc = ifelse(time<=21, "Early",
+                              ifelse(time>21 & time < (time_nec-21), "Chronic",
+                                     "Late-stage"))) %>%
+    dplyr::mutate(time_disc = factor(time_disc,levels=c("Early","Chronic","Late-stage"))) %>%
+    ungroup() %>%  
+    dplyr::mutate(tissue=ifelse(tissue=="LN", "J", tissue)) %>%
+    dplyr::filter(tissue != "LPL", tissue!="PB") %>%
+    dplyr::mutate(tissue=factor(tissue, levels=c("P", "J", "K",
+                                          "O", "B", "U")))
+  return(tbl)
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 }
 
 # old, when feats was a list and list of rules was short
@@ -210,6 +247,7 @@ df_all_rules = do.call(rbind, mclapply(feats, function(x) {
     # 1_01	ID	197	Q
     # 1_01	ID	317	E
     # 1_01	molecular_size	28 	> -3.656
+<<<<<<< HEAD
   }
   if (isTRUE(x$ID[r1s1] == "W" & 
              x$ID[r1s3] == "E" &
@@ -234,6 +272,32 @@ df_all_rules = do.call(rbind, mclapply(feats, function(x) {
     # 1_04	molecular_size	28 	> -3.656
   }
   if (isTRUE(x$ID[r1s1] == "W" & 
+=======
+  }
+  if (isTRUE(x$ID[r1s1] == "W" & 
+             x$ID[r1s3] == "E" &
+             x$MS[r1s4] > -3.656)) {
+    y$`1_02`=1
+    # 1_02	ID	325	W
+    # 1_02	ID	317	E
+    # 1_02	molecular_size	28 	> -3.656
+  }
+  if (isTRUE(x$ID[r1s1] == "W" & 
+             x$ID[r1s3] == "E")) {
+    y$`1_03`=1
+    # 1_03	ID	325	W
+    # 1_03	ID	317	E
+  }
+  if (isTRUE(x$ID[r1s1] == "W" & 
+             x$ID[r1s2] == "Q" &
+             x$MS[r1s4] > -3.656)) {
+    y$`1_04`=1
+    # 1_04	ID	325	W
+    # 1_04	ID	197	Q
+    # 1_04	molecular_size	28 	> -3.656
+  }
+  if (isTRUE(x$ID[r1s1] == "W" & 
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
              x$ID[r1s2] == "Q" )) {
     y$`1_05`=1
     # 1_05	ID	325	W
@@ -307,6 +371,7 @@ df_all_rules$isolate=names(feats)
 
 df_all = tbl.manip(df_all_rules, df, "1_01", "6_01")
 
+<<<<<<< HEAD
 # Performance for reduced rules ##############################
 # df_red_rules = do.call(rbind, mclapply(feats, function(x) {
 #   y=data.frame(`1_03`=NA,`4_02`=NA,`4_03`=NA,`6_01`=NA)
@@ -342,16 +407,28 @@ df_all = tbl.manip(df_all_rules, df, "1_01", "6_01")
 # 
 # df_red = tbl.manip(df_red_rules, df, "1_03", "6_01")
 
+=======
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 
 colors=c("P"="indianred", "J"='midnightblue', "K" = "lightblue",
          "O" = "lightgreen", "B" = "mediumpurple", "U" = "pink")
 
+<<<<<<< HEAD
 
 p1=dplyr::select(df_all, isolate, class, training, time_disc, tissue) %>%
   distinct() %>%
   filter(training=="application") %>%
   ggplot() +
   geom_bar(aes(x=time_disc, y=..count.., fill=tissue), position="stack") +
+=======
+totals = dplyr::select(df_all, isolate, class, time_disc, tissue) %>%
+  dplyr::distinct() %>%
+  dplyr::group_by(class, time_disc, tissue) %>%
+  dplyr::summarize(total=n())
+
+p1=ggplot(totals) +
+  geom_col(aes(x=time_disc, y=total, fill=tissue), position="stack") +
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
   facet_wrap(~class, ncol=2) +
   theme_minimal() +
   scale_fill_manual(name="Tissue", labels=c("Plasma", "Lymph Node", "CD3+ PBMCs",
@@ -362,6 +439,7 @@ p1=dplyr::select(df_all, isolate, class, training, time_disc, tissue) %>%
         text=element_text(size=14),
         legend.position="bottom")
 
+<<<<<<< HEAD
 
 p2=filter(df_all, training=="application") %>%
   mutate(rule_group=ifelse(grepl("(1_).+", rule), "Group 1 Rules",
@@ -374,6 +452,17 @@ p2=filter(df_all, training=="application") %>%
   summarize(tissue_total=sum(value, na.rm=T))%>%
   ggplot() +
   geom_bar(aes(x=time_disc, y=tissue_total, fill=tissue), stat="identity") +
+=======
+grouped = dplyr::filter(df_all, value==1) %>%
+  dplyr::mutate(rule_group=gsub("(\\d)_.+", "Group \\1 Rules", rule)) %>%
+  dplyr::select(isolate, class, rule_group, time_disc, tissue) %>%
+  distinct() %>% # Necessary because counted more than once in a rule group
+  dplyr::group_by(rule_group, class, time_disc, tissue) %>%
+  dplyr::summarize(n=n())
+
+p2= ggplot(grouped) +
+  geom_col(aes(x=time_disc, y=n, fill=tissue), position="stack") +
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
   facet_wrap(rule_group~class, scales="free_y", ncol=2) +
   theme_minimal() +
   scale_fill_manual(name="Tissue", labels=c("Plasma", "Lymph Node", "CD3+ PBMCs",
@@ -384,10 +473,28 @@ p2=filter(df_all, training=="application") %>%
         text=element_text(size=14),
         legend.position="none")
 
+<<<<<<< HEAD
+=======
+freq = dplyr::left_join(grouped, totals) %>%
+  dplyr::mutate(perc = n/total)
+
+p3=ggplot(freq) +
+  geom_col(aes(x=time_disc, y=perc*100, fill=tissue), position="stack") +
+  facet_wrap(rule_group~class, ncol=2) +
+  theme_minimal() +
+  scale_fill_manual(name="Tissue", labels=c("Plasma", "Lymph Node", "CD3+ PBMCs",
+                                            "CD14+ PBMCs", "Bone Marrow", "BAL"),
+                    values=colors) +
+  labs(x="Time point", y="Number of sequences") +
+  theme(axis.text.x = element_text(angle=45, hjust=1),
+        text=element_text(size=14),
+        legend.position="none")
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 #ggarrange(p1,p2, ncol=2)
 ggsave(plot=p1, "total_tissue.png", width=4, height=11, units="in")
 ggsave(plot=p2, "rules_application.png", width=4, height=11, units="in")
 # Copy above into assign_rules
+<<<<<<< HEAD
 
 # Now determine percentage of each tissue classified correctly
 # and incorrectly as SIVE
@@ -402,6 +509,41 @@ filter(df_all, training=="application") %>%
   mutate(n=n()) %>%
   summarize(perc=sum(rule_count, na.rm=T)/n) %>%
   distinct()
+=======
 
+# Now determine percentage of each tissue classified correctly
+# and incorrectly as SIVE
+>>>>>>> 1fd09ad7e4a38a352116ccfa341d1ea728adb435
 
+filter(df_all, training=="application") %>%
+  dplyr::select(isolate, tissue, value) %>%
+  group_by(isolate) %>%
+  mutate(rule_count = ifelse(sum(value, na.rm=T)>0, 1, 0)) %>%
+  dplyr::select(-value) %>%
+  distinct() %>%
+  group_by(tissue) %>%
+  mutate(n=n()) %>%
+  summarize(perc=sum(rule_count, na.rm=T)/n) %>%
+  distinct()
 
+dplyr::filter(training=="application") %>%
+  
+  
+rule_counts = dplyr::left_join(df_all_rules, df) %>%
+  dplyr::filter(training=="training", class=="SIVE") %>%
+  dplyr::mutate(animal = ifelse(grepl("JA41", isolate), "JA41",
+                                ifelse(grepl("^[A-Z]+", isolate),
+                                       gsub("^([A-Z]+\\d+).+", "\\1", isolate),
+                                       gsub("\\d+([A-Z]\\d+)[A-Z].+", "\\1", isolate)))) %>%
+  gather(rule, value, "1_01":"6_01") %>%
+  group_by(animal) %>%
+  dplyr::mutate(total_seqs=length(unique(isolate))) %>%
+  dplyr::filter(value==1) %>%
+  dplyr::group_by(rule, animal) %>%
+  dplyr::summarize(seqs=length(isolate),
+                   perc_seqs = round(seqs/total_seqs*100)) %>%
+  dplyr::group_by(rule) %>%
+  dplyr::summarize(seqs=sum(seqs),
+            animals=length(unique(animal[perc_seqs>85])))
+
+write.csv(rule_counts, "rule_counts_85.csv", quote=F, row.names=F)
